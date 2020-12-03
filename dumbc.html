@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Dumb Charades - Hindi Movies</title>
+  <style>
+  body {
+    font-size: 18px;
+    font-family: Arial;
+    text-align: center;
+  }
+
+  #title {
+      font-size: 60px;
+      color: Blue;
+      margin: 40px;
+   }
+
+   #list {
+      text-align: left;
+      line-height: 35px;
+   }
+  </style>
+  <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
+</head>
+<body>
+
+<div>Use following movie name for Dumb Charades</div>
+
+<div id="title"></div>
+<b>Additional Info:</b>
+<div id="list"></div>
+ 
+<script language="javascript">
+ymax = 2018;
+ymin = 1940;
+var get_random = function(max, min) {
+                        rand = Math.floor(Math.random() * (max - min + 1)) + min; 
+                        return rand;
+           };
+year = get_random(ymax, ymin);
+title = 'List_of_Bollywood_films_of_' + year;
+
+
+var apiEndpoint = "https://en.wikipedia.org/w/api.php";
+var params = 'action=parse&page=' + title + '&prop=text&formatversion=2&format=json'
+
+/**
+ * Send the request to wiki api get the page content
+ */
+fetch(apiEndpoint + "?" + params + "&origin=*")
+    .then(function(response){
+               return response.json();
+     })
+    .then(function(response) {
+          var pagetext = response.parse.text;
+          var el = $($.parseHTML(pagetext)).find("table.wikitable");
+          
+          rand_table_id = get_random(0, el.length-1);
+          table=el[rand_table_id];
+          rows = $(table).find('tr')
+
+          rand_row_id = get_random(1, rows.length-1);
+
+          title_row = $(rows[0]).find('th').toArray();
+          data_row = $(rows[rand_row_id]).find('td').toArray();
+
+          diff = title_row.length - data_row.length
+          m_data = {};
+          for (p=title_row.length; p>= 0; p--){
+               m_data[$.trim($(title_row.pop()).text())] = $.trim($(data_row.pop()).text());
+          }
+          m_data['Year'] = year;
+
+          $("#title").text(m_data['Title']);
+
+          $.each(m_data, function(k, v){
+               if (k !== '' && v !== '' && k !== 'Ref.' && k !== 'Title' && k !== 'Opening'){
+                    kv = '<div>' + k + ': ' + v + '</div>';
+                    $("#list").prepend(kv); 
+               }
+          });
+     });
+
+refresh = function(){
+     window.location = window.location
+
+};
+
+</script>
+ 
+<input type="button" value="Refresh" onClick="refresh()" style="color: blue;background: aquamarine;" />
+</body>
+</html>
