@@ -20,6 +20,17 @@
       text-align: left;
       line-height: 35px;
    }
+
+   #list div {
+      color: green;
+      padding: 5px;
+   }
+
+   button {
+     color: blue;
+     background: aquamarine;
+     font-size: 26px;
+   }
   </style>
   <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
 </head>
@@ -74,9 +85,10 @@ fetch(apiEndpoint + "?" + params + "&origin=*")
 
           $("#title").text(m_data['Title']);
 
+          color_list = ['#264653','#e76f51', '#d62828', '#606c38', '#7f5539', '#023e8a', '#b5838d', '#e76f51'];
           $.each(m_data, function(k, v){
                if (k !== '' && v !== '' && k !== 'Ref.' && k !== 'Title' && k !== 'Opening'){
-                    kv = '<div>' + k + ': ' + v + '</div>';
+                    kv = '<div style="color:' + color_list.pop() + ';">' + k + ': ' + v + '</div>';
                     $("#list").prepend(kv); 
                }
           });
@@ -89,6 +101,6 @@ refresh = function(){
 
 </script>
  
-<input type="button" value="Refresh" onClick="refresh()" style="color: blue;background: aquamarine;" />
+<button onClick="refresh()" >Refresh</button>
 </body>
 </html>
