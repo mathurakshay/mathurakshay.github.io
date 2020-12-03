@@ -23,7 +23,7 @@
 
    #list div {
       color: green;
-      padding: 5px;
+      padding: 25px;
    }
 
    button {
@@ -88,7 +88,7 @@ fetch(apiEndpoint + "?" + params + "&origin=*")
           color_list = ['#264653','#e76f51', '#d62828', '#606c38', '#7f5539', '#023e8a', '#b5838d', '#e76f51'];
           $.each(m_data, function(k, v){
                if (k !== '' && v !== '' && k !== 'Ref.' && k !== 'Title' && k !== 'Opening'){
-                    kv = '<div style="color:' + color_list.pop() + ';">' + k + ': ' + v + '</div>';
+                    kv = '<div style="color:' + color_list.pop() + ';"><b>' + k + '</b>: ' + v + '</div>';
                     $("#list").prepend(kv); 
                }
           });
